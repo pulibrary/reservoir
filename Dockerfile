@@ -1,4 +1,9 @@
-FROM --platform=linux/arm64 maven:3.9-eclipse-temurin-21 AS build_jar
+FROM --platform=linux/arm64 ghcr.io/graalvm/jdk-community:25 AS build_jar
+
+# "Steal" Maven from the official image to bypass package manager issues completely
+COPY --from=maven:3.9-eclipse-temurin-21 /usr/share/maven /usr/share/maven
+RUN ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+
 WORKDIR /app
 
 COPY pom.xml .
