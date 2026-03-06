@@ -1,6 +1,5 @@
 FROM --platform=linux/arm64 ghcr.io/graalvm/jdk-community:25 AS build_jar
 
-# "Steal" Maven from the official image to bypass package manager issues completely
 COPY --from=maven:3.9-eclipse-temurin-21 /usr/share/maven /usr/share/maven
 RUN ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 
@@ -10,7 +9,7 @@ COPY pom.xml .
 COPY server/pom.xml server/pom.xml
 COPY util/pom.xml util/pom.xml
 
-RUN mvn -B dependency:go-offline
+RUN mvn -B -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.http.retryHandler.count=3 dependency:go-offline
 
 COPY server/ server
 COPY util/ util
@@ -19,7 +18,7 @@ COPY descriptors/ descriptors
 ARG GIT_COMMIT=master
 RUN echo "git.commit.id=${GIT_COMMIT}" > server/src/main/resources/git.properties
 
-RUN mvn -B -DskipTests -Pdocker-build package
+RUN mvn -B -DskipTests -Pdocker-build -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.http.retryHandler.count=3 package
 
 FROM --platform=linux/amd64 ghcr.io/graalvm/jdk-community:25 AS slim
 
