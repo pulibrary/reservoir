@@ -439,7 +439,8 @@ export function matchkey(record) {
       getRelevantSubField(marcObj, '260', 'b'),
     ])
   );
-  keyStr += addComponent(doTypeOfRecord(marcObj.leader));
+  const type = doTypeOfRecord(marcObj.leader);
+  keyStr += addComponent(type);
   keyStr += addComponent(doTitlePart(getMultiSubfields(marcObj, '245', 'p')));
   keyStr += addComponent(doTitleNumber(getRelevantSubField(marcObj, '245', 'n')));
   keyStr += addComponent(
@@ -453,5 +454,8 @@ export function matchkey(record) {
   keyStr += addComponent(doInclusiveDates(getRelevantSubField(marcObj, '245', 'f')));
   keyStr += addComponent(doGDCN(getRelevantSubField(marcObj, '086', 'a')));
   keyStr += addComponent(doElectronicIndicator(marcObj));
+  if (type !== 'm') {
+    keyStr += crypto.randomUUID();
+  }
   return keyStr.toLowerCase();
 }
