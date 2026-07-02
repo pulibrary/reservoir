@@ -80,11 +80,11 @@ function getMultiSubfields(record, tag, sf) {
   return data;
 }
 
-function getLinkedField(record, field) {
-  const fields = record.fields.filter((f) => f['880']);
-  const linkedField = fields.find(f => f['6'].endsWith(field['6'].slice(-2)))
-  return linkedField['a'];
-}
+// function getLinkedField(record, field) {
+//   const fields = record.fields.filter((f) => f['880']);
+//   const linkedField = fields.find(f => f['6'].endsWith(field['6'].slice(-2)))
+//   return linkedField['a'];
+// }
 
 function stripPunctuation(keyPart, replaceChar) {
   let trimmed = keyPart;
@@ -326,7 +326,7 @@ function doAuthor(fieldData) {
       fieldStr += dataStr;
     }
   }
-  return padContent(fieldStr.replace(/[^a-zA-Z0-9]/g, ''), 5);
+  return padContent(fieldStr.replace(/[^a-zA-Z0-9]/g, ''), 20);
 }
 
 function doInclusiveDates(fieldData) {
@@ -421,7 +421,6 @@ export function matchkey(record) {
       getRelevantSubField(marcObj, '245', 'a'),
       getRelevantSubField(marcObj, '245', 'b'),
       getRelevantSubField(marcObj, '245', 'p'),
-      getLinkedField(record, getRelevantSubField(marcObj, '245', 'a'))
     ])
   );
   keyStr += addComponent(
@@ -452,7 +451,6 @@ export function matchkey(record) {
     ])
   );
   keyStr += addComponent(doInclusiveDates(getRelevantSubField(marcObj, '245', 'f')));
-  keyStr += addComponent(doGDCN(getRelevantSubField(marcObj, '086', 'a')));
   keyStr += addComponent(doElectronicIndicator(marcObj));
   if (type !== 'm') {
     keyStr += crypto.randomUUID();
