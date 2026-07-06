@@ -404,12 +404,15 @@ function doElectronicIndicator(marcObj) {
 }
 
 function doLocation(fieldData) {
-  const inSpecialCollections = false;
+  const scLocations = ['marquand', 'mudd', 'rare'];
+  const inSpecialCollections = true;
   for (let n = 1; n < fieldData.length; n += 1) {
-    const scLocations = []
+    if (!scLocations.includes(fieldData[n])) {
+      inSpecialCollections = false;
+    }
     
   }
-  // return padContent(fieldStr, 30);
+  return inSpecialCollections;
 }
 
 function addComponent(component) {
@@ -471,7 +474,7 @@ export function matchkey(record) {
 
   const scLocation = doLocation(getMultiSubfields(marcObj, 'AVA', 'b'))
   const bibLevel = doBibLevel(marcObj.leader);
-  if (bibLevel !== 'm') {
+  if (bibLevel !== 'm' || !scLocation) {
     keyStr += Math.random() * Math.pow(10, 16);
   }
   return keyStr.toLowerCase();
