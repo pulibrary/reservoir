@@ -299,6 +299,14 @@ function doTypeOfRecord(fieldData) {
   return fieldStr;
 }
 
+function doBibLevel(fieldData) {
+  let fieldStr = '';
+  if (fieldData.length > 10) {
+    fieldStr = fieldData.substring(7, 8);
+  }
+  return fieldStr;
+}
+
 function doTitlePart(fieldData) {
   // Use all p subfields, apart from the first
   let fieldStr = '';
@@ -447,8 +455,7 @@ export function matchkey(record) {
       getRelevantSubField(marcObj, '260', 'b'),
     ])
   );
-  const type = doTypeOfRecord(marcObj.leader);
-  keyStr += addComponent(type);
+  keyStr += addComponent(doTypeOfRecord(marcObj.leader));
   keyStr += addComponent(doTitlePart(getMultiSubfields(marcObj, '245', 'p')));
   keyStr += addComponent(doTitleNumber(getRelevantSubField(marcObj, '245', 'n')));
   keyStr += addComponent(
@@ -463,7 +470,8 @@ export function matchkey(record) {
   keyStr += addComponent(doElectronicIndicator(marcObj));
 
   const scLocation = doLocation(getMultiSubfields(marcObj, 'AVA', 'b'))
-  if (type !== 'm') {
+  const bibLevel = doBibLevel(marcObj.leader);
+  if (bibLevel !== 'm') {
     keyStr += Math.random() * Math.pow(10, 16);
   }
   return keyStr.toLowerCase();
