@@ -1,7 +1,5 @@
 // Generates GoldRush match key.
 
-const crypto = require('crypto');
-
 function loadMarcJson(record) {
   const marcObj = JSON.parse(record).marc;
   if (marcObj.fields === undefined) {
@@ -466,7 +464,7 @@ export function matchkey(record) {
 
   const scLocation = doLocation(getMultiSubfields(marcObj, 'AVA', 'b'))
   if (type !== 'm') {
-    keyStr += crypto.randomUUID();
+    keyStr += Math.random() * Math.pow(10, 16);
   }
   return keyStr.toLowerCase();
 }
