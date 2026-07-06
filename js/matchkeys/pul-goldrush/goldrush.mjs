@@ -395,6 +395,15 @@ function doElectronicIndicator(marcObj) {
   return 'p';
 }
 
+function doLocation(fieldData) {
+  const inSpecialCollections = false;
+  for (let n = 1; n < fieldData.length; n += 1) {
+    const scLocations = []
+    
+  }
+  // return padContent(fieldStr, 30);
+}
+
 function addComponent(component) {
   // Assist debug
   const debug = false;
@@ -452,8 +461,10 @@ export function matchkey(record) {
   );
   keyStr += addComponent(doInclusiveDates(getRelevantSubField(marcObj, '245', 'f')));
   keyStr += addComponent(doElectronicIndicator(marcObj));
+
+  const scLocation = doLocation(getMultiSubfields(marcObj, 'AVA', 'b'))
   if (type !== 'm') {
-    keyStr += crypto.randomUUID();
+    keyStr += randomUUID();
   }
   return keyStr.toLowerCase();
 }
