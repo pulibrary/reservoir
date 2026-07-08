@@ -475,7 +475,7 @@ export function matchkey(record) {
   const scLocation = doLocation(getMultiSubfields(marcObj, 'AVA', 'b'))
   const bibLevel = doBibLevel(marcObj.leader);
   if (bibLevel !== 'm' || !scLocation) {
-    keyStr += Math.random() * Math.pow(10, 16);
+    keyStr += getField(marcObj, '001');
   }
   return keyStr.toLowerCase();
 }
