@@ -406,11 +406,10 @@ function doElectronicIndicator(marcObj) {
 function doLocation(fieldData) {
   const scLocations = ['marquand', 'mudd', 'rare'];
   let inSpecialCollections = true;
-  for (let n = 1; n < fieldData.length; n += 1) {
-    if (!scLocations.includes(fieldData[n])) {
+  for (let n = 0; n < fieldData.length; n += 1) {
+    if (scLocations.indexOf(fieldData[n]) === -1) {
       inSpecialCollections = false;
     }
-    
   }
   return inSpecialCollections;
 }
