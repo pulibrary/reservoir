@@ -1,0 +1,5 @@
+{
+  "id": "pul-goldrush-matcher",
+  "type": "javascript",
+  "url": "https://raw.githubusercontent.com/pulibrary/reservoir/master/js/matchkeys/pul-goldrush/goldrush.mjs"
+}
